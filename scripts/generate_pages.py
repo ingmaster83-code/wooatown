@@ -154,19 +154,43 @@ def region_page(region):
   <p class="sub">총 {total:,}건의 생활정보를 카테고리별로 모아봤어요</p>
 </section>
 
-<div class="cat-grid-wrap">
-  <div class="cat-grid">
-    {cards_html}
-  </div>
+<div class="tab-bottom-ad">
+  <ins class="adsbygoogle" style="display:inline-block;width:728px;max-width:100%;height:90px"
+       data-ad-client="ca-pub-6464921081676309" data-ad-slot="7080296704"></ins>
 </div>
 
-<section class="seo-intro">
-  <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:12px;">{esc(full)} 생활정보 안내</h2>
-  <p style="color:var(--text-muted);font-size:.88rem;line-height:1.8;">
-    {esc(full)}의 전통시장, 공영주차장, 캠핑장, 파크골프장, 전기차 충전소, 어린이 놀이시설, 반려동물 동반여행지, 병원·약국 정보를
-    카테고리별로 모아뒀습니다. 각 카드를 누르면 해당 정보를 전문으로 다루는 우아하우스 사이트로 이동해서 상세 내용을 확인할 수 있습니다.
-  </p>
-</section>
+<div class="main-layout">
+  <div class="main-col">
+    <div class="cat-grid-wrap" style="padding:0;">
+      <div class="cat-grid">
+        {cards_html}
+      </div>
+    </div>
+
+    <section class="seo-intro">
+      <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:12px;">{esc(full)} 생활정보 안내</h2>
+      <p style="color:var(--text-muted);font-size:.88rem;line-height:1.8;">
+        {esc(full)}의 전통시장, 공영주차장, 캠핑장, 파크골프장, 전기차 충전소, 어린이 놀이시설, 반려동물 동반여행지, 병원·약국 정보를
+        카테고리별로 모아뒀습니다. 각 카드를 누르면 해당 정보를 전문으로 다루는 우아하우스 사이트로 이동해서 상세 내용을 확인할 수 있습니다.
+      </p>
+    </section>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-box">
+      <h3>💡 우아동네란?</h3>
+      <ul>
+        <li>🏘️ 우아하우스 생활정보 9개 사이트 모음</li>
+        <li>📍 지역별로 한눈에 확인</li>
+        <li>🔗 클릭하면 전문 사이트로 이동</li>
+      </ul>
+    </div>
+    <div class="sidebar-ad">
+      <ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px"
+           data-ad-client="ca-pub-6464921081676309" data-ad-slot="6255378195"></ins>
+    </div>
+  </aside>
+</div>
 
 <footer class="site-footer">
   <div class="footer-inner">
@@ -176,6 +200,9 @@ def region_page(region):
     <div class="footer-bottom"><p>&copy; 2026 WooaHouse. All rights reserved.</p></div>
   </div>
 </footer>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6464921081676309" crossorigin="anonymous"></script>
+<script>document.querySelectorAll('ins.adsbygoogle').forEach(function(){{(adsbygoogle=window.adsbygoogle||[]).push({{}});}});</script>
 </body>
 </html>"""
 
@@ -236,29 +263,53 @@ def index_page():
   <p class="sub">우아하우스 생활정보 사이트 9곳을 지역별로 한곳에 모았어요</p>
 </section>
 
-<section class="section">
-  <h2 class="section-title" style="text-align:center;margin-bottom:20px;">📊 모아둔 정보</h2>
-  <div class="site-summary-grid">
-    {site_summary}
-  </div>
-  <p class="grand-total">총 {grand_total:,}건의 생활정보</p>
-</section>
+<div class="main-layout">
+  <div class="main-col">
+    <div class="tab-bottom-ad">
+      <ins class="adsbygoogle" style="display:inline-block;width:728px;max-width:100%;height:90px"
+           data-ad-client="ca-pub-6464921081676309" data-ad-slot="7080296704"></ins>
+    </div>
 
-<section class="section">
-  <h2 class="section-title" style="text-align:center;margin-bottom:24px;">📍 지역별로 찾기</h2>
-  <div class="region-grid">
-    {cards_html}
-  </div>
-</section>
+    <section class="section">
+      <h2 class="section-title" style="text-align:center;margin-bottom:20px;">📊 모아둔 정보</h2>
+      <div class="site-summary-grid">
+        {site_summary}
+      </div>
+      <p class="grand-total">총 {grand_total:,}건의 생활정보</p>
+    </section>
 
-<section class="seo-intro">
-  <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;">우아동네 — 우리 동네 생활정보 모음</h2>
-  <p style="color:var(--text-muted);font-size:.9rem;line-height:1.9;">
-    <strong>우아동네</strong>는 우아하우스가 만든 9개의 지역 생활정보 사이트(전통시장, 주차장, 캠핑장, 파크골프장,
-    전기차 충전소, 어린이 놀이시설, 반려동물 동반여행지, 병원·약국)를 지역별로 한곳에 모아 보여주는 종합 안내 페이지입니다.
-    지역을 선택하면 그 동네의 생활정보를 카테고리별 개수로 한눈에 확인하고, 자세한 내용은 각 전문 사이트에서 바로 확인할 수 있습니다.
-  </p>
-</section>
+    <section class="section">
+      <h2 class="section-title" style="text-align:center;margin-bottom:24px;">📍 지역별로 찾기</h2>
+      <div class="region-grid">
+        {cards_html}
+      </div>
+    </section>
+
+    <section class="seo-intro">
+      <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;">우아동네 — 우리 동네 생활정보 모음</h2>
+      <p style="color:var(--text-muted);font-size:.9rem;line-height:1.9;">
+        <strong>우아동네</strong>는 우아하우스가 만든 9개의 지역 생활정보 사이트(전통시장, 주차장, 캠핑장, 파크골프장,
+        전기차 충전소, 어린이 놀이시설, 반려동물 동반여행지, 병원·약국)를 지역별로 한곳에 모아 보여주는 종합 안내 페이지입니다.
+        지역을 선택하면 그 동네의 생활정보를 카테고리별 개수로 한눈에 확인하고, 자세한 내용은 각 전문 사이트에서 바로 확인할 수 있습니다.
+      </p>
+    </section>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-box">
+      <h3>💡 우아동네란?</h3>
+      <ul>
+        <li>🏘️ 우아하우스 생활정보 9개 사이트 모음</li>
+        <li>📍 지역별로 한눈에 확인</li>
+        <li>🔗 클릭하면 전문 사이트로 이동</li>
+      </ul>
+    </div>
+    <div class="sidebar-ad">
+      <ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px"
+           data-ad-client="ca-pub-6464921081676309" data-ad-slot="6255378195"></ins>
+    </div>
+  </aside>
+</div>
 
 <footer class="site-footer">
   <div class="footer-inner">
@@ -268,6 +319,9 @@ def index_page():
     <div class="footer-bottom"><p>&copy; 2026 WooaHouse. All rights reserved.</p></div>
   </div>
 </footer>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6464921081676309" crossorigin="anonymous"></script>
+<script>document.querySelectorAll('ins.adsbygoogle').forEach(function(){{(adsbygoogle=window.adsbygoogle||[]).push({{}});}});</script>
 </body>
 </html>"""
 
