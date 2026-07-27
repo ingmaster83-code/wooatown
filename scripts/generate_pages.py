@@ -238,6 +238,7 @@ def index_page():
   <meta name="description" content="우아하우스 생활정보 사이트 9개를 지역별로 한곳에 모았습니다. 전통시장, 주차장, 캠핑장, 파크골프장, 전기차 충전소, 어린이 놀이시설, 반려동물 동반여행지, 병원·약국까지 우리 동네 생활정보를 한눈에 확인하세요.">
   <meta name="keywords" content="우리 동네 생활정보,지역 정보 모음,전통시장,주차장,캠핑장,병원,약국">
   <meta name="robots" content="index, follow">
+  <meta name="naver-site-verification" content="ce4f0929c89793556cb3995f35f7212d3e456535" />
   <link rel="canonical" href="https://wooatown.wooahouse.com/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="우리 동네 생활정보 모음 | 우아동네">
