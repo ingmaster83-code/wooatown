@@ -244,6 +244,7 @@ def index_page():
   <meta property="og:title" content="우리 동네 생활정보 모음 | 우아동네">
   <meta property="og:description" content="시장·주차장·캠핑장·병원 등 지역 생활정보를 한곳에서">
   <meta property="og:url" content="https://wooatown.wooahouse.com/">
+  <meta property="og:image" content="https://wooatown.wooahouse.com/og-image.png">
   <meta name="twitter:card" content="summary">
   {HEAD_STYLE}
   <link rel="stylesheet" href="css/style.css">
