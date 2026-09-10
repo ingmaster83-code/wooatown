@@ -32,6 +32,18 @@ WOOASIJANG_SLUG = {
 }
 
 
+
+# 쿠팡 파트너스 (고객 관심 기반 추천) — 콘텐츠·애드센스 아래, 페이지 최하단. 고지 문구는 푸터에 표기.
+COUPANG_HTML = '''
+<div class="coupang-partners" style="margin:36px auto 0;max-width:720px;padding:0 16px 8px;text-align:center;overflow-x:auto;">
+  <script src="https://ads-partners.coupang.com/g.js"></script>
+  <script>
+    new PartnersCoupang.G({"id":980427,"trackingCode":"AF5600192","subId":"town","template":"carousel","width":"680","height":"140"});
+  </script>
+</div>
+'''
+COUPANG_DISCLOSURE = '    <p style="margin:6px 0 0;font-size:.7rem;opacity:.55;">이 페이지는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>\n'
+
 def url_wooasijang(region, domain):
     name = WOOASIJANG_NAME[region]
     slug = WOOASIJANG_SLUG[name]
@@ -192,13 +204,14 @@ def region_page(region):
   </aside>
 </div>
 
+{COUPANG_HTML}
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-col"><p class="footer-heading">정보</p><a href="{footer_up}privacy.html">개인정보처리방침</a><a href="{footer_up}">메인으로</a></div>
     </div>
     <div class="footer-bottom"><p>&copy; 2026 WooaHouse. All rights reserved.</p></div>
-  </div>
+{COUPANG_DISCLOSURE}  </div>
 </footer>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6464921081676309" crossorigin="anonymous"></script>
@@ -313,13 +326,14 @@ def index_page():
   </aside>
 </div>
 
+{COUPANG_HTML}
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-col"><p class="footer-heading">정보</p><a href="{footer_up}privacy.html">개인정보처리방침</a><a href="{footer_up}">메인으로</a></div>
     </div>
     <div class="footer-bottom"><p>&copy; 2026 WooaHouse. All rights reserved.</p></div>
-  </div>
+{COUPANG_DISCLOSURE}  </div>
 </footer>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6464921081676309" crossorigin="anonymous"></script>
