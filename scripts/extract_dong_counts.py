@@ -41,7 +41,7 @@ SOURCES = [
     ("wooavet", "우아동물병원", "🐾", "동물병원", "wooavet.wooahouse.com", "wooavet/_rawdata/hub_items.json", True, None),
     ("wooakinder", "우아유치원", "🏫", "유치원", "wooakinder.wooahouse.com", "wooakinder/_rawdata/hub_items.json", True, "note"),
     ("wooasenior", "우아경로당", "🏘️", "경로당·마을회관", "wooasenior.wooahouse.com", "wooasenior/_rawdata/hub_items.json", True, "note"),
-    ("wooagreen", "우아그린", "🌳", "도시공원·근린공원", "wooagreen.wooahouse.com", "wooagreen/_rawdata/hub_items.json", True, "note"),
+    ("wooagreen", "우아그린", "🌳", "도시공원·근린공원", "wooagreen.wooahouse.com", "wooagreen/_data_src/hub_items.json", True, "note"),
     ("hosppass", "우아병원", "🏥", "병원·의원·약국", "hosppass.wooahouse.com", None, False, "label"),
 ]
 
