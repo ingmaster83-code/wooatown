@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""우아동네(wooatown) 페이지 생성기 — 9개 공공데이터 사이트를 지역별로 묶어 보여주는 허브.
+"""우아동네(wooatown) 페이지 생성기 — 16개 공공데이터 사이트를 지역별로 묶어 보여주는 허브.
 콘텐츠를 복제하지 않고, 카테고리별 요약(개수)만 보여준 뒤 각 사이트의 실제 지역 페이지로 링크한다."""
 import json
 import os
@@ -84,13 +84,51 @@ URL_BUILDERS = {
     "wooaparkgolf": url_full_new_region,
     "wooacharge": url_full_new_region,
     "hosppass": url_short_지역,
+    "wooaleisure": url_short_region,
+    "wooasnack": url_short_region,
+    "wooalotto": url_short_region,
+    "wooabroker": url_short_region,
+    "wooaconstruct": url_short_region,
+    "wooapay": url_short_region,
+    "wooahagwon": url_short_region,
 }
 
 with open(DATA_PATH, encoding="utf-8") as f:
     HUB = json.load(f)
 
 SITE_ORDER = ["wooasijang", "wooapet", "wooabike", "wooaparking", "wooacamp",
-              "wooakids", "wooaparkgolf", "wooacharge", "hosppass"]
+              "wooakids", "wooaparkgolf", "wooacharge", "hosppass",
+              "wooaleisure", "wooasnack", "wooalotto", "wooabroker", "wooaconstruct", "wooapay", "wooahagwon"]
+N_SITES = len(SITE_ORDER)
+
+# 시군구 링크 섹션용 (extract_dong_counts.py 가 만든 캐시가 있으면 사용)
+SG_BY_REGION = {}
+_cache = os.path.join(BASE, "scripts", "_cache", "dong_hub.json")
+if os.path.exists(_cache):
+    with open(_cache, encoding="utf-8") as _f:
+        _hub = json.load(_f)
+    for _v in _hub["sigungu"].values():
+        if _v["total"] > 0:
+            SG_BY_REGION.setdefault(_v["do"], []).append(_v)
+    for _r in SG_BY_REGION:
+        SG_BY_REGION[_r].sort(key=lambda v: (-v["total"], v["sg"]))
+
+
+def sigungu_section(region):
+    from urllib.parse import quote
+    lst = SG_BY_REGION.get(region, [])
+    if not lst:
+        return ""
+    chips = "".join(
+        f'<a class="chip" href="/동네/{quote(v["do"], safe="")}/{quote(v["sgSlug"], safe="")}/">{esc(v["sg"])}<em>{v["total"]:,}</em></a>'
+        for v in lst
+    )
+    return f"""
+    <section class="seo-intro">
+      <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:12px;">📍 {esc(REGION_FULL[region])} 시군구·동네별 생활정보</h2>
+      <div class="chip-row">{chips}</div>
+    </section>
+"""
 
 HEAD_STYLE = """<link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">"""
@@ -179,6 +217,7 @@ def region_page(region):
       </div>
     </div>
 
+    {sigungu_section(region)}
     <section class="seo-intro">
       <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:12px;">{esc(full)} 생활정보 안내</h2>
       <p style="color:var(--text-muted);font-size:.88rem;line-height:1.8;">
@@ -192,7 +231,7 @@ def region_page(region):
     <div class="sidebar-box">
       <h3>💡 우아동네란?</h3>
       <ul>
-        <li>🏘️ 우아하우스 생활정보 9개 사이트 모음</li>
+        <li>🏘️ 우아하우스 생활정보 {N_SITES}개 사이트 모음</li>
         <li>📍 지역별로 한눈에 확인</li>
         <li>🔗 클릭하면 전문 사이트로 이동</li>
       </ul>
@@ -248,7 +287,7 @@ def index_page():
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>우리 동네 생활정보 모음 — 시장·주차장·캠핑장·병원 한눈에 | 우아동네</title>
-  <meta name="description" content="우아하우스 생활정보 사이트 9개를 지역별로 한곳에 모았습니다. 전통시장, 주차장, 캠핑장, 파크골프장, 전기차 충전소, 어린이 놀이시설, 반려동물 동반여행지, 병원·약국까지 우리 동네 생활정보를 한눈에 확인하세요.">
+  <meta name="description" content="우아하우스 생활정보 사이트 {N_SITES}개를 지역별·동네별로 한곳에 모았습니다. 전통시장, 주차장, 캠핑장, 병원·약국, 체육시설, 겨울간식, 복권 판매점, 공인중개사, 학원까지 우리 동네 생활정보를 한눈에 확인하세요.">
   <meta name="keywords" content="우리 동네 생활정보,지역 정보 모음,전통시장,주차장,캠핑장,병원,약국">
   <meta name="robots" content="index, follow">
   <meta name="naver-site-verification" content="ce4f0929c89793556cb3995f35f7212d3e456535" />
@@ -275,7 +314,7 @@ def index_page():
 
 <section class="hero">
   <h1>🏘️ 우리 동네 생활정보 모음</h1>
-  <p class="sub">우아하우스 생활정보 사이트 9곳을 지역별로 한곳에 모았어요</p>
+  <p class="sub">우아하우스 생활정보 사이트 {N_SITES}곳을 지역별·동네별로 한곳에 모았어요</p>
 </section>
 
 <div class="main-layout">
@@ -303,7 +342,7 @@ def index_page():
     <section class="seo-intro">
       <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;">우아동네 — 우리 동네 생활정보 모음</h2>
       <p style="color:var(--text-muted);font-size:.9rem;line-height:1.9;">
-        <strong>우아동네</strong>는 우아하우스가 만든 9개의 지역 생활정보 사이트(전통시장, 주차장, 캠핑장, 파크골프장,
+        <strong>우아동네</strong>는 우아하우스가 만든 {N_SITES}개의 지역 생활정보 사이트(전통시장, 주차장, 캠핑장, 파크골프장, 체육시설, 겨울간식, 복권 판매점, 공인중개사, 학원, 건설업체, 지역화폐 가맹점,
         전기차 충전소, 어린이 놀이시설, 반려동물 동반여행지, 병원·약국)를 지역별로 한곳에 모아 보여주는 종합 안내 페이지입니다.
         지역을 선택하면 그 동네의 생활정보를 카테고리별 개수로 한눈에 확인하고, 자세한 내용은 각 전문 사이트에서 바로 확인할 수 있습니다.
       </p>
@@ -314,7 +353,7 @@ def index_page():
     <div class="sidebar-box">
       <h3>💡 우아동네란?</h3>
       <ul>
-        <li>🏘️ 우아하우스 생활정보 9개 사이트 모음</li>
+        <li>🏘️ 우아하우스 생활정보 {N_SITES}개 사이트 모음</li>
         <li>📍 지역별로 한눈에 확인</li>
         <li>🔗 클릭하면 전문 사이트로 이동</li>
       </ul>

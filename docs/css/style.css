@@ -661,3 +661,18 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .cat-name { font-size: 1rem; font-weight: 800; color: var(--text); }
 .cat-desc { font-size: .82rem; color: var(--text-muted); }
 .cat-count { font-size: 1.1rem; font-weight: 800; color: var(--primary); flex-shrink: 0; }
+
+/* ===== 동네(시군구·동) 허브 추가 ===== */
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+.chip{display:inline-block;padding:6px 12px;border:1px solid var(--border, #E5E7EB);border-radius:999px;background:#fff;color:var(--text, #111827);text-decoration:none;font-size:.85rem}
+.chip:hover{border-color:var(--primary, #4F46E5);color:var(--primary, #4F46E5)}
+.chip em{font-style:normal;color:#9CA3AF;font-size:.78rem;margin-left:4px}
+.summary-p{color:var(--text-muted, #374151);line-height:1.85;font-size:.95rem;margin:4px 0 18px}
+.dong-nav{display:flex;justify-content:space-between;gap:10px;margin:24px 0 8px}
+.dong-nav a{flex:1;display:block;padding:12px 14px;border:1px solid var(--border, #E5E7EB);border-radius:12px;background:#fff;color:var(--text, #111827);text-decoration:none;font-weight:600;font-size:.9rem;text-align:center}
+.dong-nav a:hover{border-color:var(--primary, #4F46E5)}
+.faq-block{margin:28px 0 8px}
+.faq-block h2{font-size:1.05rem;font-weight:700;margin-bottom:10px}
+.faq-block details{margin-bottom:8px;border:1px solid var(--border, #E5E7EB);border-radius:10px;background:#fff;padding:2px 14px}
+.faq-block summary{cursor:pointer;font-weight:600;padding:10px 0;font-size:.93rem}
+.faq-block p{color:var(--text-muted, #374151);line-height:1.8;font-size:.9rem;padding-bottom:12px}
