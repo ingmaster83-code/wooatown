@@ -18,10 +18,10 @@ DOCS = gp.DOCS
 CACHE = os.path.join(gp.BASE, "scripts", "_cache", "dong_hub.json")
 DATA = json.load(open(CACHE, encoding="utf-8"))
 SRC = DATA["sources"]
-ORDER = ["wooaleisure", "wooasnack", "wooalotto", "wooabroker", "wooaconstruct", "wooapay", "wooahagwon"]
-UNIT = {"wooaleisure": "체육시설", "wooasnack": "간식 가게", "wooalotto": "복권 판매점", "wooabroker": "공인중개사사무소",
+ORDER = ["wooaleisure", "wooasnack", "wooalotto", "wooaplay", "wooashop", "wootoilet", "wooabroker", "wooaconstruct", "wooapay", "wooahagwon"]
+UNIT = {"wooaleisure": "체육시설", "wooasnack": "간식 가게", "wooalotto": "복권 판매점", "wooaplay": "노래방·영화관", "wooashop": "동네 가게", "wootoilet": "공중화장실", "wooabroker": "공인중개사사무소",
         "wooaconstruct": "건설업체", "wooapay": "지역화폐 가맹점", "wooahagwon": "학원·교습소"}
-SHORT = {"wooaleisure": "체육시설", "wooasnack": "겨울간식", "wooalotto": "복권방", "wooabroker": "중개사",
+SHORT = {"wooaleisure": "체육시설", "wooasnack": "겨울간식", "wooalotto": "복권방", "wooaplay": "놀거리", "wooashop": "가게", "wootoilet": "화장실", "wooabroker": "중개사",
          "wooaconstruct": "건설업체", "wooapay": "가맹점", "wooahagwon": "학원"}
 
 # 같은 이름의 시군구가 여러 시도에 있는 경우(중구·북구 등)

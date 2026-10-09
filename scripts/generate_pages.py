@@ -91,6 +91,9 @@ URL_BUILDERS = {
     "wooaconstruct": url_short_region,
     "wooapay": url_short_region,
     "wooahagwon": url_short_region,
+    "wooaplay": url_short_region,
+    "wooashop": url_short_region,
+    "wootoilet": url_short_region,
 }
 
 with open(DATA_PATH, encoding="utf-8") as f:
@@ -98,7 +101,7 @@ with open(DATA_PATH, encoding="utf-8") as f:
 
 SITE_ORDER = ["wooasijang", "wooapet", "wooabike", "wooaparking", "wooacamp",
               "wooakids", "wooaparkgolf", "wooacharge", "hosppass",
-              "wooaleisure", "wooasnack", "wooalotto", "wooabroker", "wooaconstruct", "wooapay", "wooahagwon"]
+              "wooaleisure", "wooasnack", "wooalotto", "wooaplay", "wooashop", "wootoilet", "wooabroker", "wooaconstruct", "wooapay", "wooahagwon"]
 N_SITES = len(SITE_ORDER)
 
 # 시군구 링크 섹션용 (extract_dong_counts.py 가 만든 캐시가 있으면 사용)
