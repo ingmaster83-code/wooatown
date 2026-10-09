@@ -37,7 +37,24 @@ SOURCES = [
     ("wooaconstruct", "우아건설", "🏗️", "건설업 등록 업체", "wooaconstruct.wooahouse.com", "wooaconstruct/_rawdata/con_*.json", False, None),
     ("wooapay", "우아페이", "💳", "지역화폐 가맹점", "wooapay.wooahouse.com", "wooapay/_rawdata/pay_*.json", False, None),
     ("wooahagwon", "우아학원", "📚", "학원·교습소 수강료", "wooahagwon.wooahouse.com", "wooahagwon/_rawdata/leaf_*.json", False, None),
+    ("hosppass", "우아병원", "🏥", "병원·의원·약국", "hosppass.wooahouse.com", None, False, "label"),
 ]
+
+
+def load_hosppass():
+    """hosppass/docs/지역/{시도}/{시군구}.json 의 병원·약국(읍면동 emd_nm 포함)을 평탄화."""
+    base = os.path.join(ROOT, "hosppass", "docs", "지역")
+    out = []
+    for f in glob.glob(os.path.join(base, "*", "*.json")):
+        dirname = os.path.basename(os.path.dirname(f))
+        do = "세종" if dirname == "세종시" else dirname
+        d = json.load(open(f, encoding="utf-8"))
+        for kind, lst in (("h", d.get("hospitals", [])), ("p", d.get("pharmacies", []))):
+            for h in lst:
+                out.append({"doShort": do, "sigungu_raw": d.get("sggu", ""), "dong": h.get("emd_nm"),
+                            "label": (h.get("cl_nm") or "병원") if kind == "h" else "약국",
+                            "lat": h.get("y"), "lng": h.get("x"), "dir": dirname})
+    return out
 SRC_META = {s[0]: dict(name=s[1], icon=s[2], desc=s[3], domain=s[4], district=s[6]) for s in SOURCES}
 
 
@@ -56,13 +73,15 @@ def main():
     items_by_src = {}
     for key, *_rest in SOURCES:
         pat = [s for s in SOURCES if s[0] == key][0][5]
-        items_by_src[key] = list(load_items(pat))
+        items_by_src[key] = load_hosppass() if pat is None else list(load_items(pat))
         print(f"[{key}] {len(items_by_src[key]):,}건", flush=True)
 
     # ---- 1) hub_data.json: 시도별 개수
     hub_path = os.path.join(DOCS, "hub_data.json")
     hub = json.load(open(hub_path, encoding="utf-8"))
     for key, name, icon, desc, domain, _pat, _d, _sub in SOURCES:
+        if _pat is None:   # hosppass 는 기존 hub_data 항목(우아병원) 유지
+            continue
         counts = Counter(it["doShort"] for it in items_by_src[key])
         hub[key] = {"name": name, "icon": icon, "desc": desc, "domain": domain,
                     "counts": {r: counts.get(r, 0) for r in CANON}, "total": sum(counts.values())}
@@ -87,6 +106,24 @@ def main():
     for (d, sg, dg), slug in master.items():
         sg_slug[(d, sg)] = slug
     print(f"기준 동 {len(master):,}개, 시군구 {len(sg_slug):,}개")
+
+    # hosppass: '수원팔달구' 같은 축약 시군구명을 기준 시군구('수원시 팔달구')로 매핑하고, 기준에 없던 동은 추가
+    def sgn(s):
+        return str(s).replace(" ", "").replace("시", "")
+    norm_idx = {(d, sgn(sg)): sg for (d, sg) in sg_slug}
+    hp_sg_link = {}
+    for it in items_by_src["hosppass"]:
+        sg = norm_idx.get((it["doShort"], sgn(it["sigungu_raw"])))
+        it["sigungu"] = sg or "-"
+        if sg:
+            hp_sg_link[(it["doShort"], sg)] = f"https://hosppass.wooahouse.com/지역/{q(it['dir'])}/{q(it['sigungu_raw'])}.html"
+            it["link"] = hp_sg_link[(it["doShort"], sg)]
+            dg = it.get("dong")
+            if dg and dg != "기타":
+                k = (it["doShort"], sg, dg)
+                if k not in master:
+                    master[k] = sg_slug[(it["doShort"], sg)]
+                    city_idx[(it["doShort"], sg.split()[0], dg)].add(sg)
 
     def resolve(it):
         """아이템을 기준 동 키로 매핑. 불가하면 None."""
@@ -115,8 +152,11 @@ def main():
         cnt = defaultdict(int)
         sub = defaultdict(Counter)
         link_seg = {}
+        custom_link = {}
         for it in items_by_src[key]:
             k = resolve(it)
+            if k is not None and it.get("link"):
+                custom_link[k] = it["link"]
             if k is None:
                 unmapped += 1
                 # 시군구 단위 집계에는 구 단위 사이트의 '기타' 동도 포함
@@ -137,7 +177,7 @@ def main():
             s = slot(k)
             s["counts"][key] = n
             seg = link_seg[k]
-            s["links"][key] = f"https://{domain}/region/{q(k[0])}/{q(seg[0])}/{q(seg[1])}/"
+            s["links"][key] = custom_link.get(k) or f"https://{domain}/region/{q(k[0])}/{q(seg[0])}/{q(seg[1])}/"
             if subf:
                 s["sub"][key] = [[lab, c] for lab, c in sub[k].most_common(4)]
         stat[key] = (mapped, unmapped)
@@ -147,7 +187,10 @@ def main():
     for (d, sg), slug in sg_slug.items():
         city = sg.split()[0]
         for key, name, icon, desc, domain, _pat, district, _sub in SOURCES:
-            if district:
+            if key == "hosppass":
+                if (d, sg) in hp_sg_link:
+                    sg_links[(d, sg)][key] = hp_sg_link[(d, sg)]
+            elif district:
                 sg_links[(d, sg)][key] = f"https://{domain}/region/{q(d)}/{q(slug)}/"
             else:
                 sg_links[(d, sg)][key] = f"https://{domain}/region/{q(d)}/{q(city)}/"
@@ -164,6 +207,11 @@ def main():
     for it in items_by_src["wooaleisure"]:
         if it.get("lat") not in ("", None) and it.get("dong") != "기타":
             pts[(it["doShort"], it["sigungu"], it["dong"])].append((float(it["lat"]), float(it["lng"])))
+    for it in items_by_src["hosppass"]:
+        if it.get("lat") and it.get("lng"):
+            kk = resolve(it)
+            if kk is not None:
+                pts[kk].append((float(it["lat"]), float(it["lng"])))
     cen = {k: (sum(a for a, _ in v) / len(v), sum(b for _, b in v) / len(v)) for k, v in pts.items() if v}
     keys = [k for k in dongs.keys() if k in cen]
     lat = np.array([cen[k][0] for k in keys]); lng = np.array([cen[k][1] for k in keys])
