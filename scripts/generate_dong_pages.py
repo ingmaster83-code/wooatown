@@ -52,7 +52,7 @@ def top_sources(counts, k=3):
 
 
 def summary_text(do, sg, dong, counts, total):
-    rows = top_sources(counts, 7)
+    rows = top_sources(counts, 12)
     parts = [f"{UNIT[key]} {n:,}곳" for n, key in rows]
     head = f"{do} {sg} {dong}에는 우아하우스 사이트 {len(rows)}곳에 정리된 생활정보가 모두 {total:,}건 있습니다"
     return head + f" ({', '.join(parts[:4])}{' 등' if len(parts) > 4 else ''}). 아래 카드를 누르면 해당 동네의 상세 목록을 전문 사이트에서 볼 수 있습니다."
@@ -167,7 +167,7 @@ def dong_page(v, prev_d, next_d):
     top_txt = "·".join(SHORT[key] for _n, key in tops)
     title = f"{sgn} {dong} 생활정보 - {top_txt} {total:,}건"
     summary = summary_text(do, sg, dong, counts, total)
-    cards = "".join(card(key, counts[key], v["links"][key], v["sub"].get(key)) for _n, key in top_sources(counts, 7))
+    cards = "".join(card(key, counts[key], v["links"][key], v["sub"].get(key)) for _n, key in top_sources(counts, 12))
     near = v.get("near", [])
     near_chips = "".join(
         f'<a class="chip" href="{dong_url(n[0], n[2], n[3])}">{gp.esc(n[3])}<em>{n[5]:,}</em></a>' for n in near[:8])
@@ -175,7 +175,7 @@ def dong_page(v, prev_d, next_d):
     near_names = ", ".join(f"{n[3]}({n[4]}km)" for n in near[:4])
     pairs = [
         (f"{dong}에는 어떤 생활정보가 있나요?",
-         f"{do} {sg} {dong}에는 " + ", ".join(f"{UNIT[key]} {n:,}곳" for n, key in top_sources(counts, 7)) + "이 정리되어 있습니다."),
+         f"{do} {sg} {dong}에는 " + ", ".join(f"{UNIT[key]} {n:,}곳" for n, key in top_sources(counts, 12)) + "이 정리되어 있습니다."),
     ]
     if near_names:
         pairs.append((f"{dong} 근처 동네는 어디인가요?", f"가까운 동네는 {near_names} 순입니다."))
@@ -211,7 +211,7 @@ def sigungu_page(v):
     sgn = sg_name(do, sg)
     counts = v["counts"]
     total = v["total"]
-    cards = "".join(card(key, counts[key], v["links"][key]) for _n, key in top_sources(counts, 7))
+    cards = "".join(card(key, counts[key], v["links"][key]) for _n, key in top_sources(counts, 12))
     chips = "".join(f'<a class="chip" href="{dong_url(do, slug, d)}">{gp.esc(d)}<em>{t:,}</em></a>' for d, t in v["dongs"])
     tops = top_sources(counts, 3)
     top_txt = "·".join(SHORT[key] for _n, key in tops)
