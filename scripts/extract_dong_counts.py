@@ -37,6 +37,11 @@ SOURCES = [
     ("wooaconstruct", "우아건설", "🏗️", "건설업 등록 업체", "wooaconstruct.wooahouse.com", "wooaconstruct/_rawdata/con_*.json", False, None),
     ("wooapay", "우아페이", "💳", "지역화폐 가맹점", "wooapay.wooahouse.com", "wooapay/_rawdata/pay_*.json", False, None),
     ("wooahagwon", "우아학원", "📚", "학원·교습소 수강료", "wooahagwon.wooahouse.com", "wooahagwon/_rawdata/leaf_*.json", False, None),
+    ("wooagym", "우아헬스장", "💪", "헬스장·피트니스·체력단련장", "wooagym.wooahouse.com", "wooagym/_rawdata/hub_items.json", True, None),
+    ("wooavet", "우아동물병원", "🐾", "동물병원", "wooavet.wooahouse.com", "wooavet/_rawdata/hub_items.json", True, None),
+    ("wooakinder", "우아유치원", "🏫", "유치원", "wooakinder.wooahouse.com", "wooakinder/_rawdata/hub_items.json", True, "note"),
+    ("wooasenior", "우아경로당", "🏘️", "경로당·마을회관", "wooasenior.wooahouse.com", "wooasenior/_rawdata/hub_items.json", True, "note"),
+    ("wooagreen", "우아그린", "🌳", "도시공원·근린공원", "wooagreen.wooahouse.com", "wooagreen/_rawdata/hub_items.json", True, "note"),
     ("hosppass", "우아병원", "🏥", "병원·의원·약국", "hosppass.wooahouse.com", None, False, "label"),
 ]
 
