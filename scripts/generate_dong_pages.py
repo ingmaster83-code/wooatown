@@ -39,6 +39,31 @@ def q(s):
     return quote(str(s), safe="")
 
 
+# 우아인구(wooaingu) 링크용: 어떤 동네·시군구 페이지가 있는지(scripts/ingu_slugs.json, 우아인구 scripts/export_ingu_slugs.py 가 만든다)
+# 값은 우아인구 안의 경로("dong/서울/강남구/역삼1동" 등). 통합 전 표기(광주·전남)와 띄어쓰기 없는 구 이름도 별칭 키로 들어 있다.
+_INGU_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ingu_slugs.json")
+INGU = json.load(open(_INGU_PATH, encoding="utf-8")) if os.path.exists(_INGU_PATH) else {"dong": {}, "sg": {}}
+INGU_BASE = "https://wooaingu.wooahouse.com"
+
+
+def ingu_section(do, sg, dong=None):
+    """동 페이지가 있으면 동 링크, 없으면 시군구 링크. 대상 페이지가 없으면 빈 문자열."""
+    path = INGU["dong"].get(f"{do}|{sg}|{dong}") if dong else None
+    if path:
+        label = f"{dong} 인구·세대수 현황"
+        name = dong
+    else:
+        path = INGU["sg"].get(f"{do}|{sg}")
+        if not path:
+            return ""
+        label = f"{sg} 동네별 인구·세대수 현황"
+        name = dong or sg
+    url = INGU_BASE + "/" + "/".join(q(x) for x in path.split("/")) + "/"
+    return (f'<section class="seo-intro"><h2 style="font-size:1.05rem;font-weight:700;margin-bottom:10px;">👥 {gp.esc(name)} 인구·세대수</h2>'
+            f'<p style="color:var(--text-muted);font-size:.88rem;line-height:1.8;">주민등록 인구, 세대수, 1인 가구 비율, 연령대별 구성과 최근 인구 추이는 우아인구에서 볼 수 있습니다.</p>'
+            f'<p style="margin-top:8px;font-size:.9rem;"><a href="{url}" target="_blank" rel="noopener">{gp.esc(label)} →</a></p></section>')
+
+
 def dong_url(do, sg_slug, dong):
     return f"/동네/{q(do)}/{q(sg_slug)}/{q(dong)}/"
 
@@ -190,6 +215,7 @@ def dong_page(v, prev_d, next_d):
       </div>
     </div>
     {near_html}
+    {ingu_section(do, sg, dong)}
     {nav}
     {faq}
     <section class="seo-intro">
@@ -228,6 +254,7 @@ def sigungu_page(v):
       <h2 style="font-size:1.05rem;font-weight:700;margin-bottom:10px;">📍 {gp.esc(sg)} 동네별 생활정보</h2>
       <div class="chip-row">{chips}</div>
     </section>
+    {ingu_section(do, sg)}
     <section class="seo-intro">
       <p style="color:var(--text-muted);font-size:.88rem;line-height:1.8;">{gp.esc(do)} {gp.esc(sg)}의 동네 이름을 눌러 체육시설·겨울간식·복권 판매점·공인중개사·건설업체·학원 정보를 한눈에 확인하세요. 집계는 동네 단위로 확인된 업체 기준입니다.</p>
       <p style="margin-top:10px;font-size:.9rem;"><a href="/지역/{q(do)}.html">{gp.esc(gp.REGION_FULL[do])} 생활정보 →</a></p>
